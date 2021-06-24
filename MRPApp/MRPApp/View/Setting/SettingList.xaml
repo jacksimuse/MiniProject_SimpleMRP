@@ -10,7 +10,8 @@
     d:DesignHeight="630" d:DesignWidth="1200"
     Title="SettingList" Loaded="Page_Loaded">
     <Page.Resources>
-        <Style TargetType="Label"><!-- {x:Type Label} -->
+        <Style TargetType="Label">
+            <!-- {x:Type Label} -->
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -24,7 +25,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Margin="10">
+    <Grid Margin="10" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="1*" />
@@ -33,76 +34,131 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="210" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
-    
+
         <!-- 제목입력 시작 -->
-        <Label Grid.Row="0" Grid.Column="1" Content="창고리스트" FontSize="26" FontWeight="ExtraBold"
+        <Label Grid.Row="0" Grid.Column="1" Content="설정" FontSize="26" FontWeight="ExtraBold"
                VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
         <!-- 제목입력 끝 -->
-        
-        <!-- 버튼영역 시작 -->
-        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
-            <Button x:Name="BtnAddStore" 
-                    FontSize="14"
-                    Background="DarkSlateBlue" Foreground="White"
-                    Content="창고추가" Height="50" Margin="5,10,5,5" Click="BtnAddStore_Click">
+
+        <!-- 입력/수정영역 시작 -->
+        <Grid Grid.Row="1" Grid.Column="2" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="코드" />
+            <Label Grid.Row="1" Grid.Column="0" Content="코드명" />
+            <Label Grid.Row="2" Grid.Column="0" Content="코드설명" />
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="TxtBasicCode" Margin="3" Width="200" Text="" FontSize="14" MaxLength="8" />
+                <TextBlock x:Name="LblBasicCode" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="TxtCodeName" Margin="3" Width="200" Text="" FontSize="14" MaxLength="100" />
+                <TextBlock x:Name="LblCodeName" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="TxtCodeDesc" Margin="3" Width="200" Text="" FontSize="14" 
+                         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <TextBlock x:Name="LblCodeDesc" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+        </Grid>
+        <!-- 입력/수정영역 끝 -->
+
+        <!-- 버튼영역 -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="BtnNew" 
+                    Height="50" Width="120" Content="신규" FontSize="14" 
+                    Background="CornflowerBlue"
+                    Margin="10, 0" Click="BtnNew_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding}" Margin="20, 0" VerticalAlignment="Center" />
-                            <iconPacks:PackIconMaterialDesign Kind="AddCircle" Width="24" Height="24" />
+                            <TextBlock Text="{Binding}" Margin="5, 0" VerticalAlignment="Center" />
+                            <Image Source="/Resources/sign_add.png" Width="24" Height="24" />
                         </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
-            <Button x:Name="BtnEditStore" 
-                    FontSize="14"
-                    Background="DarkSlateBlue" Foreground="White"
-                    Content="창고수정" Height="50" Margin="5,5" Click="BtnEditStore_Click">
+            <Button x:Name="BtnInsert" 
+                    Height="50" Width="120" Content="입력" FontSize="14" 
+                    Background="CornflowerBlue"
+                    Margin="10" Click="BtnInsert_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding}" Margin="20, 0" VerticalAlignment="Center" />
-                            <iconPacks:PackIconFontAwesome Kind="PenSolid" Width="24" Height="24" />
+                            <TextBlock Text="{Binding}" Margin="5, 0" VerticalAlignment="Center" />
+                            <Image Source="/Resources/sign_check.png" Width="24" Height="24" />
                         </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
-            </Button>            
-            <Button x:Name="BtnExportExcel" 
-                    FontSize="14"
-                    Background="Silver" Foreground="Black"
-                    Content="Excel익스포트" Height="50" Margin="5,5" Click="BtnExportExcel_Click">
+            </Button>
+            <Button x:Name="BtnUpdate" 
+                    Background="LightSteelBlue"
+                    Margin="10" Height="50" Width="120" Content="수정" FontSize="14" Click="BtnUpdate_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding}" Margin="20, 0" VerticalAlignment="Center" />
-                            <iconPacks:PackIconModern Kind="OfficeExcel" Width="24" Height="24" />
+                            <TextBlock Text="{Binding}" Margin="5, 0" VerticalAlignment="Center" />
+                            <Image Source="/Resources/pencil.png" Width="24" Height="24" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+            <Button x:Name="BtnDelete" 
+                    Background="LightSteelBlue"
+                    Height="50" Width="120" Content="삭제" FontSize="14" Click="BtnDelete_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding}" Margin="5, 0" VerticalAlignment="Center" />
+                            <Image Source="/Resources/delete.png" Width="24" Height="24" />
                         </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
             </Button>
         </StackPanel>
+
         <!-- 버튼영역 끝 -->
-        
         <!-- 컨텐츠영역 시작 -->
         <Grid Grid.Row="1" Grid.Column="1" Margin="5">
-            <Grid.RowDefinitions>                
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="40"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"/>
-
-            <DataGrid x:Name="GrdData" 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Content="검색어"/>
+                <TextBox x:Name="TxtSearch" Width="200" Margin="5" Background="WhiteSmoke" KeyDown="TxtSearch_KeyDown"/>
+                <Button x:Name="BtnSearch" Content="검색" Margin="5" Width="80" FontSize="14" FontWeight="ExtraBold"
+                        Background="CornflowerBlue" Click="BtnSearch_Click"/>
+            </StackPanel>
+            <DataGrid x:Name="GrdData" Grid.Row="1"
                       AutoGenerateColumns="False" SelectionUnit="FullRow"
                       GridLinesVisibility="Vertical" IsReadOnly="True"
                       Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
-                      ItemsSource="{Binding}">
+                      ItemsSource="{Binding}" SelectedCellsChanged="GrdData_SelectedCellsChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding StoreID}" Header="순번" Width="60" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding StoreName}" Header="창고명" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding StoreLocation}" Header="창고위치" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding StockQuantity}" Header="재고수" Width="1*" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding BasicCode}" Header="코드" Width="100" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding CodeName}" Header="코드명" Width="1*" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding CodeDesc}" Header="코드설명" Width="1*" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding RegDate, StringFormat='yyyy-MM-dd HH:mm:ss'}" Header="등록일" Width="1*" IsReadOnly="True" />
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
