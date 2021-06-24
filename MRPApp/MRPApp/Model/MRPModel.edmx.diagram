@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="17ff1f91d4fb400b8f0ee6817dd10479" Name="Diagram1">
+        <EntityTypeShape EntityType="MRPModel.Process" Width="1.5" PointX="5.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MRPModel.Schedules" Width="1.5" PointX="3.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MRPModel.Settings" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="MRPModel.FK_Process_Schedules" ManuallyRouted="false" />
+        <AssociationConnector Association="MRPModel.FK_Process_Settings" ManuallyRouted="false" />
+        <AssociationConnector Association="MRPModel.FK_Schedules_Settings" ManuallyRouted="false" />
+        <AssociationConnector Association="MRPModel.FK_Schedules_Settings1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
