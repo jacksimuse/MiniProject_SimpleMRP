@@ -14,6 +14,9 @@ namespace MRPApp
         // NLog 정적 인스턴스 생성
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
+        // 현재 애플리케이션 공장코드
+        public static string PLANTCODE = string.Empty;
+
         // 로그인한 유저 정보
 
         /// <summary>
