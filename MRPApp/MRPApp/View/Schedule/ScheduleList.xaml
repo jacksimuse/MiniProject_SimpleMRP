@@ -1,4 +1,5 @@
 ﻿<Page 
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     x:Class="MRPApp.View.Schedule.ScheduleList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -72,25 +73,55 @@
 
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                 <TextBox x:Name="TxtSchIdx" Margin="3" Width="200" Text="" FontSize="14" IsReadOnly="True" 
+                         mah:TextBoxHelper.Watermark="순번창(입력불가)"
                          Background="LightGray"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <ComboBox x:Name="CboPlantCode" Margin="3" Width="200">
-                    
+                <ComboBox x:Name="CboPlantCode" Margin="3" Width="200" 
+                          DisplayMemberPath="CodeName" SelectedValuePath="BasicCode"
+                          mah:TextBoxHelper.Watermark="공장선택">
                 </ComboBox> 
                     <TextBlock x:Name="LblPlantCode" Text="ErrorMessage" Foreground="OrangeRed" />
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                <DatePicker x:Name="DtpSchDate" Margin="3" Width="200"></DatePicker>
+                <DatePicker x:Name="DtpSchDate" Margin="3" Width="200" mah:TextBoxHelper.Watermark="공정일선택"></DatePicker>
                 <TextBlock x:Name="LblSchDate" Text="ErrorMessage" Foreground="OrangeRed" />
             </StackPanel>
 
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                <TextBox x:Name="TxtSchLoadTime" Margin="3" Width="200"></TextBox>
+                <TextBox x:Name="TxtSchLoadTime" Margin="3" Width="200" 
+                         mah:TextBoxHelper.Watermark="공정로드타임입력(초)"></TextBox>
                 <TextBlock x:Name="LblSchLoadTime" Text="ErrorMessage" Foreground="OrangeRed" />
             </StackPanel>
+
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                <mah:TimePicker x:Name="TmpSchStartTime" Margin="3" Width="200"
+                                mah:TextBoxHelper.Watermark="공정시작시간선택"/>
+                <TextBlock x:Name="LblSchStartTime" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <mah:TimePicker x:Name="TmpSchEndTime" Margin="3" Width="200"
+                                mah:TextBoxHelper.Watermark="공정종료시간선택"/>
+                <TextBlock x:Name="LblSchEndTime" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                <ComboBox x:Name="CboFacilityID" Margin="3" Width="200"
+                          DisplayMemberPath="CodeName" SelectedValuePath="BasicCode"
+                         mah:TextBoxHelper.Watermark="공정설비선택" >
+                </ComboBox>
+                <TextBlock x:Name="LblFacilityID" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+                <mah:NumericUpDown x:Name="NudSchAmount" Margin="3" Width="200" NumericInputMode="Numbers" Minimum="0"
+                                   mah:TextBoxHelper.Watermark="게획수량선택"/>
+                <TextBlock x:Name="LblSchAmount" Text="ErrorMessage" Foreground="OrangeRed" />
+            </StackPanel>
+
         </Grid>
         <!-- 입력/수정영역 끝 -->
 
@@ -147,7 +178,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label Content="공정일자"/>
-                <TextBox x:Name="TxtSearch" Width="200" Margin="5" Background="WhiteSmoke" KeyDown="TxtSearch_KeyDown"/>
+                <DatePicker x:Name="DtpSearchDate" Margin="8" Width="120"></DatePicker>
                 <Button x:Name="BtnSearch" Content="검색" Margin="5" Width="80" FontSize="14" FontWeight="ExtraBold"
                         Background="CornflowerBlue" Click="BtnSearch_Click"/>
             </StackPanel>
@@ -157,11 +188,17 @@
                       Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
                       ItemsSource="{Binding}" SelectedCellsChanged="GrdData_SelectedCellsChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding SchIdx}" Header="순번" Width="100" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding PlantCode}" Header="공장" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding SchDate}" Header="공정일" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding SchAmount}" Header="계획수량" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding SchIdx}" Header="순번" Width="100"/>
+                    <!--<DataGridTextColumn Binding="{Binding PlantCode}" Header="공장" Width="1*" IsReadOnly="True" />-->
+                    <DataGridComboBoxColumn x:Name="CboGridPlantCode"
+                                        Header="공장" Width="1*" 
+                                        DisplayMemberPath="CodeName"
+                                        SelectedValuePath="BasicCode"
+                                        SelectedValueBinding="{Binding PlantCode}"
+                                        ></DataGridComboBoxColumn>
+                    <DataGridTextColumn Binding="{Binding SchDate, StringFormat='yyyy-MM-dd'}" Header="공정일" Width="1*"  />
+                    <DataGridTextColumn Binding="{Binding SchAmount}" Header="계획수량" Width="1*"  />
+                    <DataGridTextColumn Width="10" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

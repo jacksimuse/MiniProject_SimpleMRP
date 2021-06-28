@@ -144,8 +144,6 @@ namespace MRPApp.View.Setting
 
         private async void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (IsValidInputs() != true) return;
-
             var setting = GrdData.SelectedItem as Model.Settings;
             setting.CodeName = TxtCodeName.Text;
             setting.CodeDesc = TxtCodeDesc.Text;
