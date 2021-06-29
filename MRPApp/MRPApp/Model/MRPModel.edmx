@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MRPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MRPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Process">
           <Key>
             <PropertyRef Name="PrcIdx" />
@@ -12,8 +12,8 @@
           <Property Name="PrcIdx" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchIdx" Type="int" Nullable="false" />
           <Property Name="PrcCD" Type="char" MaxLength="14" Nullable="false" />
-          <Property Name="ProcDate" Type="date" />
-          <Property Name="ProcLoadTime" Type="int" />
+          <Property Name="PrcDate" Type="date" />
+          <Property Name="PrcLoadTime" Type="int" />
           <Property Name="PrcStartTime" Type="time" Precision="7" />
           <Property Name="PrcEndTime" Type="time" Precision="7" />
           <Property Name="PrcFacilityID" Type="char" MaxLength="8" />
@@ -121,20 +121,40 @@
             <End Role="Schedules" EntitySet="Schedules" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MRPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MRPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Process" EntityType="MRPModel.Process" />
+          <EntitySet Name="Schedules" EntityType="MRPModel.Schedules" />
+          <EntitySet Name="Settings" EntityType="MRPModel.Settings" />
+          <AssociationSet Name="FK_Process_Schedules" Association="MRPModel.FK_Process_Schedules">
+            <End Role="Schedules" EntitySet="Schedules" />
+            <End Role="Process" EntitySet="Process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Process_Settings" Association="MRPModel.FK_Process_Settings">
+            <End Role="Settings" EntitySet="Settings" />
+            <End Role="Process" EntitySet="Process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Settings" Association="MRPModel.FK_Schedules_Settings">
+            <End Role="Settings" EntitySet="Settings" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Settings1" Association="MRPModel.FK_Schedules_Settings1">
+            <End Role="Settings" EntitySet="Settings" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Process">
           <Key>
             <PropertyRef Name="PrcIdx" />
           </Key>
           <Property Name="PrcIdx" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SchIdx" Type="Int32" Nullable="false" />
-          <Property Name="PrcCD" Type="String" MaxLength="14" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="ProcDate" Type="DateTime" Precision="0" />
-          <Property Name="ProcLoadTime" Type="Int32" />
+          <Property Name="PrcCD" Type="String" Nullable="false" MaxLength="14" FixedLength="true" Unicode="false" />
+          <Property Name="PrcDate" Type="DateTime" Precision="0" />
+          <Property Name="PrcLoadTime" Type="Int32" />
           <Property Name="PrcStartTime" Type="Time" Precision="7" />
           <Property Name="PrcEndTime" Type="Time" Precision="7" />
           <Property Name="PrcFacilityID" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
@@ -143,8 +163,8 @@
           <Property Name="RegID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ModDate" Type="DateTime" Precision="3" />
           <Property Name="ModID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Schedules" Relationship="Self.FK_Process_Schedules" FromRole="Process" ToRole="Schedules" />
-          <NavigationProperty Name="Settings" Relationship="Self.FK_Process_Settings" FromRole="Process" ToRole="Settings" />
+          <NavigationProperty Name="Schedules" Relationship="MRPModel.FK_Process_Schedules" FromRole="Process" ToRole="Schedules" />
+          <NavigationProperty Name="Settings" Relationship="MRPModel.FK_Process_Settings" FromRole="Process" ToRole="Settings" />
         </EntityType>
         <EntityType Name="Schedules">
           <Key>
@@ -162,28 +182,28 @@
           <Property Name="RegID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ModDate" Type="DateTime" Precision="3" />
           <Property Name="ModID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Process" Relationship="Self.FK_Process_Schedules" FromRole="Schedules" ToRole="Process" />
-          <NavigationProperty Name="Settings" Relationship="Self.FK_Schedules_Settings" FromRole="Schedules" ToRole="Settings" />
-          <NavigationProperty Name="Settings1" Relationship="Self.FK_Schedules_Settings1" FromRole="Schedules" ToRole="Settings" />
+          <NavigationProperty Name="Process" Relationship="MRPModel.FK_Process_Schedules" FromRole="Schedules" ToRole="Process" />
+          <NavigationProperty Name="Settings" Relationship="MRPModel.FK_Schedules_Settings" FromRole="Schedules" ToRole="Settings" />
+          <NavigationProperty Name="Settings1" Relationship="MRPModel.FK_Schedules_Settings1" FromRole="Schedules" ToRole="Settings" />
         </EntityType>
         <EntityType Name="Settings">
           <Key>
             <PropertyRef Name="BasicCode" />
           </Key>
-          <Property Name="BasicCode" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="CodeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BasicCode" Type="String" Nullable="false" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="CodeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CodeDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RegDate" Type="DateTime" Precision="3" />
           <Property Name="RegID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ModDate" Type="DateTime" Precision="3" />
           <Property Name="ModID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Process" Relationship="Self.FK_Process_Settings" FromRole="Settings" ToRole="Process" />
-          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedules_Settings" FromRole="Settings" ToRole="Schedules" />
-          <NavigationProperty Name="Schedules1" Relationship="Self.FK_Schedules_Settings1" FromRole="Settings" ToRole="Schedules" />
+          <NavigationProperty Name="Process" Relationship="MRPModel.FK_Process_Settings" FromRole="Settings" ToRole="Process" />
+          <NavigationProperty Name="Schedules" Relationship="MRPModel.FK_Schedules_Settings" FromRole="Settings" ToRole="Schedules" />
+          <NavigationProperty Name="Schedules1" Relationship="MRPModel.FK_Schedules_Settings1" FromRole="Settings" ToRole="Schedules" />
         </EntityType>
         <Association Name="FK_Process_Schedules">
-          <End Role="Schedules" Type="Self.Schedules" Multiplicity="1" />
-          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <End Type="MRPModel.Schedules" Role="Schedules" Multiplicity="1" />
+          <End Type="MRPModel.Process" Role="Process" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedules">
               <PropertyRef Name="SchIdx" />
@@ -194,8 +214,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Process_Settings">
-          <End Role="Settings" Type="Self.Settings" Multiplicity="0..1" />
-          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <End Type="MRPModel.Settings" Role="Settings" Multiplicity="0..1" />
+          <End Type="MRPModel.Process" Role="Process" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Settings">
               <PropertyRef Name="BasicCode" />
@@ -206,8 +226,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Schedules_Settings">
-          <End Role="Settings" Type="Self.Settings" Multiplicity="0..1" />
-          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <End Type="MRPModel.Settings" Role="Settings" Multiplicity="0..1" />
+          <End Type="MRPModel.Schedules" Role="Schedules" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Settings">
               <PropertyRef Name="BasicCode" />
@@ -218,8 +238,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Schedules_Settings1">
-          <End Role="Settings" Type="Self.Settings" Multiplicity="0..1" />
-          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <End Type="MRPModel.Settings" Role="Settings" Multiplicity="0..1" />
+          <End Type="MRPModel.Schedules" Role="Schedules" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Settings">
               <PropertyRef Name="BasicCode" />
@@ -229,27 +249,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="MRPEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Process" EntityType="Self.Process" />
-          <EntitySet Name="Schedules" EntityType="Self.Schedules" />
-          <EntitySet Name="Settings" EntityType="Self.Settings" />
-          <AssociationSet Name="FK_Process_Schedules" Association="Self.FK_Process_Schedules">
-            <End Role="Schedules" EntitySet="Schedules" />
-            <End Role="Process" EntitySet="Process" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Process_Settings" Association="Self.FK_Process_Settings">
-            <End Role="Settings" EntitySet="Settings" />
-            <End Role="Process" EntitySet="Process" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Schedules_Settings" Association="Self.FK_Schedules_Settings">
-            <End Role="Settings" EntitySet="Settings" />
-            <End Role="Schedules" EntitySet="Schedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Schedules_Settings1" Association="Self.FK_Schedules_Settings1">
-            <End Role="Settings" EntitySet="Settings" />
-            <End Role="Schedules" EntitySet="Schedules" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -259,50 +258,50 @@
           <EntitySetMapping Name="Process">
             <EntityTypeMapping TypeName="MRPModel.Process">
               <MappingFragment StoreEntitySet="Process">
-                <ScalarProperty Name="PrcIdx" ColumnName="PrcIdx" />
-                <ScalarProperty Name="SchIdx" ColumnName="SchIdx" />
-                <ScalarProperty Name="PrcCD" ColumnName="PrcCD" />
-                <ScalarProperty Name="ProcDate" ColumnName="ProcDate" />
-                <ScalarProperty Name="ProcLoadTime" ColumnName="ProcLoadTime" />
-                <ScalarProperty Name="PrcStartTime" ColumnName="PrcStartTime" />
-                <ScalarProperty Name="PrcEndTime" ColumnName="PrcEndTime" />
-                <ScalarProperty Name="PrcFacilityID" ColumnName="PrcFacilityID" />
-                <ScalarProperty Name="PrcResult" ColumnName="PrcResult" />
-                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
-                <ScalarProperty Name="RegID" ColumnName="RegID" />
-                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
                 <ScalarProperty Name="ModID" ColumnName="ModID" />
+                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+                <ScalarProperty Name="RegID" ColumnName="RegID" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="PrcResult" ColumnName="PrcResult" />
+                <ScalarProperty Name="PrcFacilityID" ColumnName="PrcFacilityID" />
+                <ScalarProperty Name="PrcEndTime" ColumnName="PrcEndTime" />
+                <ScalarProperty Name="PrcStartTime" ColumnName="PrcStartTime" />
+                <ScalarProperty Name="PrcLoadTime" ColumnName="PrcLoadTime" />
+                <ScalarProperty Name="PrcDate" ColumnName="PrcDate" />
+                <ScalarProperty Name="PrcCD" ColumnName="PrcCD" />
+                <ScalarProperty Name="SchIdx" ColumnName="SchIdx" />
+                <ScalarProperty Name="PrcIdx" ColumnName="PrcIdx" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Schedules">
             <EntityTypeMapping TypeName="MRPModel.Schedules">
               <MappingFragment StoreEntitySet="Schedules">
-                <ScalarProperty Name="SchIdx" ColumnName="SchIdx" />
-                <ScalarProperty Name="PlantCode" ColumnName="PlantCode" />
-                <ScalarProperty Name="SchDate" ColumnName="SchDate" />
-                <ScalarProperty Name="SchLoadTime" ColumnName="SchLoadTime" />
-                <ScalarProperty Name="SchStartTime" ColumnName="SchStartTime" />
-                <ScalarProperty Name="SchEndTime" ColumnName="SchEndTime" />
-                <ScalarProperty Name="SchFacilityID" ColumnName="SchFacilityID" />
-                <ScalarProperty Name="SchAmount" ColumnName="SchAmount" />
-                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
-                <ScalarProperty Name="RegID" ColumnName="RegID" />
-                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
                 <ScalarProperty Name="ModID" ColumnName="ModID" />
+                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+                <ScalarProperty Name="RegID" ColumnName="RegID" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="SchAmount" ColumnName="SchAmount" />
+                <ScalarProperty Name="SchFacilityID" ColumnName="SchFacilityID" />
+                <ScalarProperty Name="SchEndTime" ColumnName="SchEndTime" />
+                <ScalarProperty Name="SchStartTime" ColumnName="SchStartTime" />
+                <ScalarProperty Name="SchLoadTime" ColumnName="SchLoadTime" />
+                <ScalarProperty Name="SchDate" ColumnName="SchDate" />
+                <ScalarProperty Name="PlantCode" ColumnName="PlantCode" />
+                <ScalarProperty Name="SchIdx" ColumnName="SchIdx" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="MRPModel.Settings">
               <MappingFragment StoreEntitySet="Settings">
-                <ScalarProperty Name="BasicCode" ColumnName="BasicCode" />
-                <ScalarProperty Name="CodeName" ColumnName="CodeName" />
-                <ScalarProperty Name="CodeDesc" ColumnName="CodeDesc" />
-                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
-                <ScalarProperty Name="RegID" ColumnName="RegID" />
-                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
                 <ScalarProperty Name="ModID" ColumnName="ModID" />
+                <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+                <ScalarProperty Name="RegID" ColumnName="RegID" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="CodeDesc" ColumnName="CodeDesc" />
+                <ScalarProperty Name="CodeName" ColumnName="CodeName" />
+                <ScalarProperty Name="BasicCode" ColumnName="BasicCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

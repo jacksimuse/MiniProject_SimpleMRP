@@ -37,7 +37,5 @@ namespace MRPApp.Model
         public virtual ICollection<Process> Process { get; set; }
         public virtual Settings Settings { get; set; }
         public virtual Settings Settings1 { get; set; }
-
-        
     }
 }
