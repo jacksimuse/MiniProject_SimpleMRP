@@ -40,16 +40,14 @@ namespace MRPApp
 
         private void MetroWindow_Activated(object sender, EventArgs e)
         {
-            //if (Commons.LOGINED_USER != null)
-            //  BtnLoginedId.Content = $"{Commons.LOGINED_USER.UserEmail} ({Commons.LOGINED_USER.UserName})";
+            
+            Commons.PLANTCODE = ConfigurationManager.AppSettings.Get("PlantCode");
+            Commons.FACILITYID = ConfigurationManager.AppSettings.Get("FacilityID");
 
-            var plantCode = ConfigurationManager.AppSettings.Get("PlantCode");
-            //BtnPlantName.Content = temp;
             try
             {
-                var plantName = Logic.DataAccess.GetSettings().Where(c => c.BasicCode.Equals(plantCode)).FirstOrDefault().CodeName;
+                var plantName = Logic.DataAccess.GetSettings().Where(c => c.BasicCode.Equals(Commons.PLANTCODE)).FirstOrDefault().CodeName;
                 BtnPlantName.Content = plantName;
-                Commons.PLANTCODE = plantCode;
             }
             catch (Exception ex)
             {

@@ -79,7 +79,7 @@
                 <Image x:Name="Sensor"
                     Width="100" Height="100" Source="sensor.png" Canvas.Left="527" Canvas.Top="102" ></Image>
                 <Image Source="belt.png" Canvas.Left="86" Canvas.Top="288"></Image>
-                <Rectangle x:Name="Product" Height="50" Width="50" Canvas.Left="548" Canvas.Top="239"
+                <Rectangle x:Name="Product" Height="50" Width="50" Canvas.Left="160" Canvas.Top="239"
                            Stroke="Black" Fill="Gray"></Rectangle>
             </Canvas>
         </Grid>
