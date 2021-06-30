@@ -1,0 +1,78 @@
+﻿<Page 
+    x:Class="MRPApp.View.Report.ReportView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:MRPApp.View.Report"
+    xmlns:oxy="http://oxyplot.org/wpf"
+    mc:Ignorable="d" 
+    d:DesignHeight="630" d:DesignWidth="1200"
+    Title="ReportView" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="Label">
+            <!-- {x:Type Label} -->
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10, 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="653*"/>
+            <ColumnDefinition Width="210" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 제목입력 시작 -->
+        <Label Grid.Row="0" Grid.Column="1" Content="리포트" FontSize="26" FontWeight="ExtraBold"
+               VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" />
+        <!-- 제목입력 끝 -->
+
+        <!-- 버튼영역 시작 -->
+        <StackPanel Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"/>
+        <!-- 버튼영역 끝 -->
+
+        <!-- 컨텐츠영역 시작 -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="5" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label Content="검색일자"/>
+                <DatePicker x:Name="DtpSearchStartDate" Margin="8" Width="120"></DatePicker>
+                <Label Content="~"/>
+                <DatePicker x:Name="DtpSearchDate" Margin="8" Width="120"></DatePicker>
+                <Button x:Name="BtnSearch" Content="검색" Margin="5" Width="80" FontSize="14" FontWeight="ExtraBold"
+                        Background="CornflowerBlue" Click="BtnSearch_Click"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <!-- 차트 영역 -->
+                <oxy:Plot>
+                    <oxy:Plot.Series>
+                        <oxy:ColumnSeries FillColor="BlueViolet" Title="계획수량" />
+                        <oxy:ColumnSeries FillColor="Blue" Title="성공수량" />
+                        <oxy:ColumnSeries FillColor="Red" Title="실패수량" />
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+            </Grid>
+        </Grid>
+        <!-- 컨텐츠영역 끝 -->
+    </Grid>
+</Page>
