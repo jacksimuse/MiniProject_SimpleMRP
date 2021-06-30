@@ -64,7 +64,7 @@
                     Grid.Column="2" 
                     Content="리포트" FontSize="16" 
                     Foreground="White" Background="DarkViolet"
-                    Margin="5, 10">
+                    Margin="5, 10" Click="BtnReport_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
