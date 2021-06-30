@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -65,6 +66,7 @@ namespace MRPApp.View.Process
                     LblSchAmount.Content = $"{currSchedule.SchAmount} 개";
                     BtnStartProcess.IsEnabled = true;
 
+                    UpdateData();
                     InitConnectMqttBroker();
                 }
             }
@@ -94,13 +96,54 @@ namespace MRPApp.View.Process
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
+        {            
+            //MessageBox.Show(currentData["PRC_MSG"]);
             if (sw.Elapsed.Seconds >= 2) // 2초 대기후 일처리
             {
                 sw.Stop();
                 sw.Reset();
-                MessageBox.Show(currentData["PRC_MSG"]);
+
+                if (currentData["PRC_MSG"] == "OK")
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate    // UI상에서 스레드가 충돌할 때 사용하는 메서드
+                    {
+                        Product.Fill = new SolidColorBrush(Colors.Green);
+                    }));
+
+                }                
+                else if (currentData["PRC_MSG"] == "FAIL")
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        Product.Fill = new SolidColorBrush(Colors.Red);
+                    }));
+                }
+
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    UpdateData();
+                }));
             }
+            
+        }
+
+        private void UpdateData()
+        {
+            // 성공 수량
+            var prcOkAmount = Logic.DataAccess.GetProcesses().Where(p => p.SchIdx.Equals(currSchedule.SchIdx))
+                                .Where(p => p.PrcResult.Equals(true)).Count();
+            // 실패 수량
+            var prcFailAmount = Logic.DataAccess.GetProcesses().Where(p => p.SchIdx.Equals(currSchedule.SchIdx))
+                                .Where(p => p.PrcResult.Equals(false)).Count();
+            // 공정 성공률
+            var prcOkRate = (double)prcOkAmount / (double)currSchedule.SchAmount * 100;
+            // 공정 실패율
+            var prcFailRate = (double)prcFailAmount / (double)currSchedule.SchAmount * 100;
+
+            LblPrcOkAmount.Content = $"{prcOkAmount} 개";
+            LblPrcFailAmount.Content = $"{prcFailAmount} 개";
+            LblPrcOkRate.Content = $"{prcOkRate} %";
+            LblPrcFailRate.Content = $"{prcFailRate} %";
         }
 
         Dictionary<string, string> currentData = new Dictionary<string, string>();
@@ -109,27 +152,35 @@ namespace MRPApp.View.Process
             var message = Encoding.UTF8.GetString(e.Message);
             currentData = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
 
-            sw.Start();
-            sw.Reset();
-            sw.Start();
+            if (currentData["PRC_MSG"] == "OK" || currentData["PRC_MSG"] == "FAIL")
+            {
+                sw.Stop();
+                sw.Reset();
+                sw.Start();
 
-            StartSensorAnimation();
+                StartSensorAnimation();
+            }
         }
 
         private void StartSensorAnimation()
         {
-            DoubleAnimation ba = new DoubleAnimation();
-            ba.From = 1;    // 이미지 보임
-            ba.To = 0;  // 이미지 안보임
-            ba.Duration = TimeSpan.FromSeconds(2);
-            ba.AutoReverse = true;
-            //ba.RepeatBehavior = RepeatBehavior.Forever;
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate    // UI상에서 스레드가 충돌할 때 사용하는 메서드
+            {
+                DoubleAnimation ba = new DoubleAnimation();
+                ba.From = 1;    // 이미지 보임
+                ba.To = 0;  // 이미지 안보임
+                ba.Duration = TimeSpan.FromSeconds(2);
+                ba.AutoReverse = true;
+                //ba.RepeatBehavior = RepeatBehavior.Forever;
 
-            Sensor.BeginAnimation(Canvas.OpacityProperty, ba);
+                Sensor.BeginAnimation(Canvas.OpacityProperty, ba);
+            }));
         }
 
         private void StartAnimaiton()
         {
+            Product.Fill = new SolidColorBrush(Colors.Gray);
+
             // 기어 애니메이션 속성
             DoubleAnimation da = new DoubleAnimation();
             da.From = 0;
@@ -172,6 +223,7 @@ namespace MRPApp.View.Process
             item.PrcLoadTime = currSchedule.SchLoadTime;
             item.PrcStartTime = currSchedule.SchStartTime;
             item.PrcEndTime = currSchedule.SchEndTime;
+            item.PrcFacilityID = Commons.FACILITYID;
             item.PrcResult = true;  //공정성공 일단 픽스
             item.RegDate = DateTime.Now;
             item.RegID = "MRP";
@@ -216,12 +268,19 @@ namespace MRPApp.View.Process
             else
             {
                 var maxPrcCd = maxPrc.PrcCD;    // PRC20210629004
-                var maxVal = int.Parse(maxPrcCd.Substring(11) + 1); // 004 --> 4 + 1 --> 5
+                var maxVal = int.Parse(maxPrcCd.Substring(11)) + 1; // 004 --> 4 + 1 --> 5
 
                 resultCode = prePrcCode + maxVal.ToString("000");   // 최대공정코드 + 1값
             }
 
             return resultCode;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            // 자원 해제
+            if (client.IsConnected) client.Disconnect();
+            timer.Dispose();
         }
     }
 }
