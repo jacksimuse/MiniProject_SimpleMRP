@@ -56,6 +56,12 @@
     <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
     </Reference>
@@ -233,6 +239,7 @@
     <Compile Include="Model\Process.cs">
       <DependentUpon>MRPModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Report.cs" />
     <Compile Include="Model\Schedules.cs">
       <DependentUpon>MRPModel.tt</DependentUpon>
     </Compile>
@@ -525,6 +532,7 @@
       <DependentUpon>MRPModel.edmx</DependentUpon>
       <LastGenOutput>MRPModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Query\SQLQuery1.sql" />
     <Resource Include="View\Process\belt.png" />
     <Resource Include="View\Process\sensor.png" />
     <Resource Include="View\Process\gear.png" />
