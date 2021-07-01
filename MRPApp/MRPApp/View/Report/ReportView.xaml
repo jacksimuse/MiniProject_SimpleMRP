@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:MRPApp.View.Report"
-    xmlns:oxy="http://oxyplot.org/wpf"
+    xmlns:live="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     mc:Ignorable="d" 
     d:DesignHeight="630" d:DesignWidth="1200"
     Title="ReportView" Loaded="Page_Loaded">
@@ -64,13 +64,10 @@
 
             <Grid Grid.Row="1">
                 <!-- 차트 영역 -->
-                <oxy:Plot>
-                    <oxy:Plot.Series>
-                        <oxy:ColumnSeries FillColor="BlueViolet" Title="계획수량" />
-                        <oxy:ColumnSeries FillColor="Blue" Title="성공수량" />
-                        <oxy:ColumnSeries FillColor="Red" Title="실패수량" />
-                    </oxy:Plot.Series>
-                </oxy:Plot>
+                <live:CartesianChart
+                    x:Name="ChtReport"
+                    BorderThickness="2"
+                    LegendLocation="Top" Margin="10"/>
             </Grid>
         </Grid>
         <!-- 컨텐츠영역 끝 -->
